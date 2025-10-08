@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # ======================
+  # 🌐 Aplicación PHP
+  # ======================
+  app:
+    build: ./app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
+
+  # ======================
+  # 🐬 Base de Datos MySQL
+  # ======================
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=${TZ:-America/Bogota}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d  # scripts que se ejecutan solo en la primera inicialización
+
+  # ======================
+  # 🧰 phpMyAdmin (interfaz web)
+  # ======================
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=${MYSQL_USER}
+      - PMA_PASSWORD=${MYSQL_PASSWORD}
+      - UPLOAD_LIMIT=64M
+    depends_on:
+      - db
+
+  # ======================
+  # 🔁 Migrador opcional (para ALTER si ya existe la BD)
+  # ======================
+  migrate:
+    image: mysql:8.0
+    depends_on:
+      - db
+    volumes:
+      - ./migrations:/migrations:ro
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    entrypoint: ["/bin/sh","-c"]
+    command: >
+      "
+      echo '⏳ Esperando a MySQL...';
+      until mysqladmin ping -h $$MYSQL_HOST -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent; do
+        sleep 2;
+      done;
+      echo '🚀 Ejecutando migraciones...';
+      for f in /migrations/*.sql; do
+        echo Ejecutando $$f;
+        mysql -h $$MYSQL_HOST -u$$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE < $$f;
+      done;
+      echo '✅ Migraciones aplicadas';
+      "
+
+volumes:
+  db_data:
