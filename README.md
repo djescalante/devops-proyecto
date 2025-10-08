@@ -1,7 +1,13 @@
-# 🚀 PHP + MySQL CRUD con Docker & phpMyAdmin
+<p align="center">
+  <img src="./screenshots/banner.png" alt="PHP + MySQL CRUD - José David Escalante" width="90%">
+</p>
 
-Aplicación web desarrollada en **PHP 8.3 + MySQL 8.0**, con despliegue automatizado mediante **Docker Compose**, y panel de administración **phpMyAdmin**.  
-Incluye módulo CRUD completo (crear, leer, actualizar y eliminar) con campo adicional **Celular** y soporte para modo oscuro.
+<h1 align="center">🚀 PHP + MySQL CRUD con Docker & phpMyAdmin</h1>
+
+<p align="center">
+Aplicación web moderna desarrollada en <b>PHP 8.3 + MySQL 8.0</b> con despliegue automatizado mediante <b>Docker Compose</b>.<br>
+Incluye módulo CRUD completo, migraciones automáticas y panel de administración con <b>phpMyAdmin</b>.
+</p>
 
 ---
 
@@ -9,22 +15,22 @@ Incluye módulo CRUD completo (crear, leer, actualizar y eliminar) con campo adi
 
 | Componente | Versión / Imagen | Descripción |
 |-------------|------------------|--------------|
-| PHP         | `php:8.3-apache` | App principal con PDO y mod_rewrite habilitados |
-| MySQL       | `mysql:8.0`      | Base de datos relacional |
-| phpMyAdmin  | `phpmyadmin:latest` | Interfaz web para administrar MySQL |
-| TailwindCSS | CDN              | Estilos modernos y responsive |
-| Alpine.js   | CDN              | Interactividad (modales, toasts, etc.) |
+| **PHP** | `php:8.3-apache` | Aplicación principal con PDO y mod_rewrite habilitados |
+| **MySQL** | `mysql:8.0` | Base de datos relacional persistente |
+| **phpMyAdmin** | `phpmyadmin:latest` | Interfaz web para administrar MySQL |
+| **TailwindCSS** | CDN | Estilos modernos, responsivos y ligeros |
+| **Alpine.js** | CDN | Interactividad para formularios y modales |
 
 ---
 
 ## 📁 Estructura del Proyecto
 
-```
+```bash
 curso-docker-web-php/
 │
 ├── app/
 │   ├── Dockerfile
-│   ├── index_crud_celular.php
+│   ├── index.php
 │   ├── db.php
 │   └── ...
 │
@@ -35,6 +41,12 @@ curso-docker-web-php/
 │   ├── 000_schema.sql
 │   └── 001_add_celular.sql
 │
+├── screenshots/
+│   ├── banner.png
+│   ├── app-light.png
+│   ├── app-dark.png
+│   └── phpmyadmin.png
+│
 ├── .env
 └── docker-compose.yml
 ```
@@ -44,6 +56,7 @@ curso-docker-web-php/
 ## ⚙️ Configuración del entorno
 
 Archivo `.env`:
+
 ```bash
 MYSQL_ROOT_PASSWORD=rootpass
 MYSQL_DATABASE=app
@@ -60,52 +73,16 @@ TZ=America/Bogota
 docker compose up -d --build
 ```
 
-**Servicios disponibles:**
+### 🔗 Servicios disponibles
 | Servicio | URL | Descripción |
 |-----------|-----|-------------|
-| App PHP   | [http://localhost:8080](http://localhost:8080) | Aplicación web |
-| phpMyAdmin | [http://localhost:8081](http://localhost:8081) | Administración de BD |
+| 🌐 App PHP | http://localhost:8080 | Aplicación CRUD principal |
+| 🧰 phpMyAdmin | http://localhost:8081 | Interfaz de administración MySQL |
 
-**Credenciales phpMyAdmin**
+**Credenciales phpMyAdmin:**
 - Servidor: `db`
 - Usuario: `app`
 - Contraseña: `app`
-
----
-
-## 🔁 Migraciones automáticas
-
-El servicio `migrate` aplica los scripts SQL de la carpeta `migrations/` en cada despliegue.  
-Ejemplo:
-```sql
-ALTER TABLE mensajes ADD COLUMN IF NOT EXISTS celular VARCHAR(20) AFTER correo;
-```
-
-Esto garantiza que la estructura de la BD se mantenga sincronizada sin perder datos existentes.
-
----
-
-## 🧮 Estructura de la tabla `mensajes`
-```sql
-CREATE TABLE mensajes (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(120) NOT NULL,
-  correo VARCHAR(180) NOT NULL,
-  celular VARCHAR(20),
-  mensaje TEXT NOT NULL,
-  fecha DATETIME NOT NULL
-);
-```
-
----
-
-## 💡 Características
-- CRUD completo con edición en modal (Alpine.js).
-- Campo *celular* con enlace directo a **WhatsApp** y **tel:**
-- Notificaciones de éxito/error.
-- Modo oscuro automático o manual.
-- Seguridad básica con token **CSRF**.
-- Scripts SQL idempotentes (`IF NOT EXISTS`).
 
 ---
 
@@ -113,20 +90,22 @@ CREATE TABLE mensajes (
 
 ### 💡 Interfaz principal (modo claro)
 <p align="center">
-  <img src="./assets/app-light.png" alt="Aplicación CRUD modo claro" width="80%">
+  <img src="./screenshots/app-light.png" alt="Aplicación CRUD modo claro" width="80%">
 </p>
 
 ### 🌙 Modo oscuro
 <p align="center">
-  <img src="./assets/app-dark.png" alt="Aplicación CRUD modo oscuro" width="80%">
+  <img src="./screenshots/app-dark.png" alt="Aplición CRUD modo oscuro" width="80%">
 </p>
 
 ### 🧰 Panel phpMyAdmin
 <p align="center">
-  <img src="./assets/phpmyadmin.png" alt="Panel phpMyAdmin" width="80%">
+  <img src="./screenshots/phpmyadmin.png" alt="Panel phpMyAdmin" width="80%">
 </p>
 
+---
 
-
-## 📜 Licencia
-Proyecto de práctica - uso educativo libre.
+<p align="center">
+  <b>Desarrollado por José David Escalante</b><br>
+  💻 <i>Administrador de Infraestructura & Desarrollador Fullstack</i>
+</p>
