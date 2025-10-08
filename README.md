@@ -109,5 +109,24 @@ CREATE TABLE mensajes (
 
 ---
 
+## 🖼️ Capturas de Pantalla
+
+### 💡 Interfaz principal (modo claro)
+<p align="center">
+  <img src="./assets/app-light.png" alt="Aplicación CRUD modo claro" width="80%">
+</p>
+
+### 🌙 Modo oscuro
+<p align="center">
+  <img src="./assets/app-dark.png" alt="Aplicación CRUD modo oscuro" width="80%">
+</p>
+
+### 🧰 Panel phpMyAdmin
+<p align="center">
+  <img src="./assets/phpmyadmin.png" alt="Panel phpMyAdmin" width="80%">
+</p>
+
+
+
 ## 📜 Licencia
 Proyecto de práctica - uso educativo libre.
